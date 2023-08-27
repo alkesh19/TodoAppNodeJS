@@ -1,0 +1,58 @@
+<head>
+    <title>
+        Todo App 
+    </title>
+</head>
+
+<script>
+
+    function parseGetDataResponse(data) {
+        console.log(data);
+    }
+
+    function getDataCallBack(resp) {
+        resp.json().then(parseGetDataResponse);
+    }
+
+    function getData() {
+        fetch("http://localhost:3000/getTodos", {
+           method: "GET",     
+        }).then(getDataCallBack);
+    
+    }
+
+    getData();
+
+    function parsedResponse(data) {
+        console.log(data);
+    }
+    function callBack(resp) {
+        resp.json().then(parsedResponse);    
+    }
+    function onPress() {        
+       
+        var title = document.getElementById("title").value;
+        var description =  document.getElementById("description").value;
+
+       fetch("http://localhost:3000/createTodo", {
+            method: "POST",
+            body : JSON.stringify ({
+                  title : title,
+                  description: description 
+            }),
+            headers: {
+               "Content-Type": "application/json"     
+            }
+
+       }).then(callBack);
+    }
+</script>
+<body>
+    Todo title 
+    <input type="text" id="title"/>
+    <br><br>
+    Todo description
+    <input type="text" id="description"/>
+    <br><br>
+    <button onclick="onPress()">Send Todo</button>
+</body>
