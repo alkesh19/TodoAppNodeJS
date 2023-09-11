@@ -6,8 +6,45 @@
 
 <script>
 
+    function deleteDone(id) {
+        console.log("Delete done ID is: "+id);
+        alert("Note deleted successfully");
+        location.reload();
+    }
+
+    function deleteToDo(id) {
+            console.log("Todo id: "+id);
+            fetch("http://localhost:3000/deleteTodos/"+id, {
+                  method: "DELETE",
+                  headers: {
+                    "content-type":"application/JSON"
+                  }  
+            }).then(deleteDone(id));
+    }
+
     function parseGetDataResponse(data) {
         console.log(data);
+        var parentElement = document.getElementById("mainArea");
+        for(var i=0; i<data.length;i++) {
+            var childElement = document.createElement("div");
+            childElement.id = data[i].id
+
+            var grandChildElement1 = document.createElement("span");
+            grandChildElement1.innerHTML = data[i].title;
+
+            var grandChildElement2 = document.createElement("span");
+            grandChildElement2.innerHTML = data[i].description;
+
+            var grandChildElement3 = document.createElement("button");
+            grandChildElement3.innerHTML = "Delete"
+            grandChildElement3.setAttribute("onclick","deleteToDo("+data[i].id+")");
+
+            childElement.append(grandChildElement1);
+            childElement.append(grandChildElement2);
+            childElement.append(grandChildElement3);
+
+            parentElement.appendChild(childElement);
+        }
     }
 
     function getDataCallBack(resp) {
@@ -55,4 +92,7 @@
     <input type="text" id="description"/>
     <br><br>
     <button onclick="onPress()">Send Todo</button>
+    <br/>
+    <br/>
+    <div id="mainArea"> Hi There</div>
 </body>

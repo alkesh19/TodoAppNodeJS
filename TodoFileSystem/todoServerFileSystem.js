@@ -18,7 +18,7 @@ app.get("/", (req,res) => {
 
 
 function findIndex(arr, id) {
-    for(let id = 0; i< arr.length; i++) {
+    for(let i = 0; i< arr.length; i++) {
         if(arr[i].id === id) return i;
     }
     return -1;
@@ -58,18 +58,22 @@ app.post("/createTodo",(req,res) => {
     })
 })
 
-/* app.delete("/deleteTodos/:id",(req,res)=>{
+app.delete("/deleteTodos/:id",(req,res)=>{
    fs.readFile("todo.json","utf-8",(error,data) => {
         if(error) throw error;
         const todos = JSON.parse(data);
         const todoIndex = findIndex(todos,parseInt(req.params.id));
         if(todoIndex === -1) {
-            req.status(404).send();
+            rreseq.status(404).send();
         } else {
-            todos = removeAtIndex(todos,todoIndex);
+            var newTodos = removeAtIndex(todos,todoIndex);
+            fs.writeFile("todo.json",JSON.stringify(newTodos), (error) => {
+                if(error) throw error;
+                res.status(200).send();
+            })
         }
    });
-}); */
+});
 
 function onAppStart() {
     console.log("Sever is running on port 3000");
